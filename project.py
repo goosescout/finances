@@ -39,6 +39,7 @@ class MainWindow(QMainWindow):
         self.timer = MyTimer(86400, self.update_data)  # таймер
         self.download_error.hide()
         self.download_success.hide()
+        self.download_error2.hide()
         self.help_text.hide()
 
         # подключение функций
@@ -149,7 +150,9 @@ class MainWindow(QMainWindow):
     def go_back_to_expances(self):
         self.stack.setCurrentIndex(2)
         self.update_current_list()
+        self.download_error.hide()
         self.download_success.hide()
+        self.download_error2.hide()
 
     # принимает элемент и добавляет/изменяет его в базе данных
     def data_reciever(self, item):
@@ -320,9 +323,15 @@ class MainWindow(QMainWindow):
         except FileExistsError:
             self.download_error.show()
             self.download_success.hide()
+            self.download_error2.hide()
+        except Exception:
+            self.download_error.hide()
+            self.download_success.hide()
+            self.download_error2.show()
         else:
             self.download_error.hide()
             self.download_success.show()
+            self.download_error2.hide()
 
     # остановка таймера при выходе из программы
     def closeEvent(self, event):
