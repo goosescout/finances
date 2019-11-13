@@ -17,13 +17,6 @@ from PyQt5.QtMultimedia import QSound, QSoundEffect
 
 
 MORPH = pymorphy2.MorphAnalyzer()  # переменная для преобразования слов
-CONVENTOR = {
-    0: 'единоразовый',
-    1: 'ежедневный',
-    2: 'еженедельный',
-    3: 'ежемесячный',
-    4: 'ежегодный'
-}  # переменная для конвертации типа
 
 
 class MainWindow(QMainWindow):
@@ -178,24 +171,24 @@ class MainWindow(QMainWindow):
             result = word.make_agree_with_number(item.get_sum()).word
             if item.get_type() == 0:
                 self.get_current_list().addItem(
-                    f'{item.get_name()}, {Datetime(item.get_time()).str_date()}: {item.get_sum()} {result}, {item.get_place()} ({CONVENTOR[item.get_type()]})'
-                    if item.get_place() else f'{item.get_name()}, {Datetime(item.get_time()).str_date()}: {item.get_sum()} {result} ({CONVENTOR[item.get_type()]})')
+                    f'{item.get_name()}, {Datetime(item.get_time()).str_date()}: {item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
+                    if item.get_place() else f'{item.get_name()}, {Datetime(item.get_time()).str_date()}: {item.get_sum()} {result} ({self.database.get_type(item)})')
             elif item.get_type() == 1:
                 self.get_current_list().addItem(
-                    f'{item.get_name()}, каждый день с {Datetime(item.get_time()).year()} года: {item.get_sum()} {result}, {item.get_place()} ({CONVENTOR[item.get_type()]})'
-                    if item.get_place() else f'{item.get_name()}, каждый день с {Datetime(item.get_time()).year()} года: {item.get_sum()} {result} ({CONVENTOR[item.get_type()]})')
+                    f'{item.get_name()}, каждый день с {Datetime(item.get_time()).year()} года: {item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
+                    if item.get_place() else f'{item.get_name()}, каждый день с {Datetime(item.get_time()).year()} года: {item.get_sum()} {result} ({self.database.get_type(item)})')
             elif item.get_type() == 2:
                 self.get_current_list().addItem(
-                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день недели: {item.get_sum()} {result}, {item.get_place()} ({CONVENTOR[item.get_type()]})'
-                    if item.get_place() else f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день недели: {item.get_sum()} {result} ({CONVENTOR[item.get_type()]})')
+                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день недели: {item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
+                    if item.get_place() else f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день недели: {item.get_sum()} {result} ({self.database.get_type(item)})')
             elif item.get_type() == 3:
                 self.get_current_list().addItem(
-                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день месяца: {item.get_sum()} {result}, {item.get_place()} ({CONVENTOR[item.get_type()]})'
-                    if item.get_place() else f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день месяца: {item.get_sum()} {result} ({CONVENTOR[item.get_type()]})')
+                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день месяца: {item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
+                    if item.get_place() else f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день месяца: {item.get_sum()} {result} ({self.database.get_type(item)})')
             elif item.get_type() == 4:
                 self.get_current_list().addItem(
-                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day_and_month()} день года: {item.get_sum()} {result}, {item.get_place()} ({CONVENTOR[item.get_type()]})'
-                    if item.get_place() else f'{item.get_name()}, каждый {Datetime(item.get_time()).day_and_month()} день года: {item.get_sum()} {result} ({CONVENTOR[item.get_type()]})')
+                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day_and_month()} день года: {item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
+                    if item.get_place() else f'{item.get_name()}, каждый {Datetime(item.get_time()).day_and_month()} день года: {item.get_sum()} {result} ({self.database.get_type(item)})')
 
         # обновление дополнительно списка (с поэтапными доходами/расходами)
         self.get_current_month_list().clear()

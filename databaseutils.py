@@ -88,6 +88,12 @@ class Database:
                     result.append(expance)
         return result
 
+    # получнение строки типа предмета
+    def get_type(self, item):
+        result = self.cursor.execute(
+            "SELECT name FROM Types WHERE id = ?", (item.get_type(),)).fetchall()
+        return result[0][0]
+
 class Item:
     def __init__(self, values):
         self.id_ = values[0]
