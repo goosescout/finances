@@ -78,15 +78,27 @@ class Database:
             cur_date = Datetime(Datetime('now').year() +
                                 '-' + Datetime('now').month() + '-' + i)
             for expance in self.get_total_result(EXPANCE):
-                if ((expance.get_type() == 0 and expance.get_time() == cur_date.str_db_date()) or
-                    (expance.get_type() == 1 and int(Datetime(expance.get_time()).year()) >= int(cur_date.year())) or
-                    (expance.get_type() == 2 and int(Datetime(expance.get_time()).day()) == cur_date.python().isoweekday()) or
-                    (expance.get_type() == 3 and int(Datetime(expance.get_time()).day()) == int(cur_date.day())) or
-                        (expance.get_type() == 3 and int(Datetime(expance.get_time()).day()) == int(cur_date.day()) and
+                if ((expance.get_type() == 0 and
+                     expance.get_time() == cur_date.str_db_date()) or
+                    (expance.get_type() == 1 and
+                        int(Datetime(expance.get_time()).year()) >= int(cur_date.year())) or
+                    (expance.get_type() == 2 and
+                        int(Datetime(expance.get_time()).day()) == cur_date.python().isoweekday()) or
+                    (expance.get_type() == 3 and
+                        int(Datetime(expance.get_time()).day()) == int(cur_date.day())) or
+                        (expance.get_type() == 3 and
+                            int(Datetime(expance.get_time()).day()) == int(cur_date.day()) and
                          int(Datetime(expance.get_time()).month()) == int(cur_date.month()))):
                     expance.time = cur_date
                     result.append(expance)
         return result
+
+    # получнение строки типа предмета
+    def get_type(self, item):
+        result = self.cursor.execute(
+            "SELECT name FROM Types WHERE id = ?", (item.get_type(),)).fetchall()
+        return result[0][0]
+
 
 class Item:
     def __init__(self, values):
@@ -135,5 +147,10 @@ class Item:
         return [self.name, self.sum_, self.type_, self.category, self.time, self.place, self.id_]\
             if include_id else [self.name, self.sum_, self.type_, self.category, self.time, self.place]
 
+    # красивая строка
     def __str__(self):
         return ', '.join(map(str, [self.name, self.sum_, self.type_, self.category, self.time, self.place, self.id_]))
+
+    # получение типа (доход/расход) в виде строки
+    def str_income_or_expance(self):
+        return 'доход' if self.category is None else 'расход'
