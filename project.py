@@ -11,12 +11,32 @@ from databaseutils import Database, Item, INCOME, EXPANCE
 from datetime import datetime, timedelta
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QDateTime, QDate, QTime, QUrl
-from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QInputDialog, QFileDialog
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow, QInputDialog, QFileDialog, QMessageBox
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtMultimedia import QSound, QSoundEffect
 
 
 MORPH = pymorphy2.MorphAnalyzer()  # переменная для преобразования слов
+STYLE = """* {
+	background:linear-gradient(to bottom, #62c1e0 5%, #019ad2 100%);
+	background-color:#62c1e0;
+	border-radius:6px;
+	border:1px solid #057fd0;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 6px;
+	text-decoration:none;
+}
+*:hover {
+	background:linear-gradient(to bottom, #019ad2 5%, #62c1e0 100%);
+	background-color:#019ad2;
+}
+*:active {
+	position:relative;
+	top:1px;
+}"""
 
 
 class MainWindow(QMainWindow):
@@ -53,7 +73,7 @@ class MainWindow(QMainWindow):
     # функция для справки
     def alter_help(self):
         if self.help.text().endswith('⯈'):
-            self.help.setText('справка ⯆')
+            self.help.setText('справка ⯅')
             self.help_text.show()
         else:
             self.help.setText('справка ⯈')
@@ -171,24 +191,39 @@ class MainWindow(QMainWindow):
             result = word.make_agree_with_number(item.get_sum()).word
             if item.get_type() == 0:
                 self.get_current_list().addItem(
-                    f'{item.get_name()}, {Datetime(item.get_time()).str_date()}: {item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
-                    if item.get_place() else f'{item.get_name()}, {Datetime(item.get_time()).str_date()}: {item.get_sum()} {result} ({self.database.get_type(item)})')
+                    f'{item.get_name()}, {Datetime(item.get_time()).str_date()}: ' +
+                    f'{item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
+                    if item.get_place() else
+                    f'{item.get_name()}, {Datetime(item.get_time()).str_date()}: ' +
+                    f'{item.get_sum()} {result} ({self.database.get_type(item)})')
             elif item.get_type() == 1:
                 self.get_current_list().addItem(
-                    f'{item.get_name()}, каждый день с {Datetime(item.get_time()).year()} года: {item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
-                    if item.get_place() else f'{item.get_name()}, каждый день с {Datetime(item.get_time()).year()} года: {item.get_sum()} {result} ({self.database.get_type(item)})')
+                    f'{item.get_name()}, каждый день с {Datetime(item.get_time()).year()} года: ' +
+                    f'{item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
+                    if item.get_place() else
+                    f'{item.get_name()}, каждый день с {Datetime(item.get_time()).year()} года: ' +
+                    f'{item.get_sum()} {result} ({self.database.get_type(item)})')
             elif item.get_type() == 2:
                 self.get_current_list().addItem(
-                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день недели: {item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
-                    if item.get_place() else f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день недели: {item.get_sum()} {result} ({self.database.get_type(item)})')
+                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день недели: ' +
+                    f'{item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
+                    if item.get_place() else
+                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день недели: ' +
+                    f'{item.get_sum()} {result} ({self.database.get_type(item)})')
             elif item.get_type() == 3:
                 self.get_current_list().addItem(
-                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день месяца: {item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
-                    if item.get_place() else f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день месяца: {item.get_sum()} {result} ({self.database.get_type(item)})')
+                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день месяца: ' +
+                    f'{item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
+                    if item.get_place() else
+                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day()} день месяца: ' +
+                    f'{item.get_sum()} {result} ({self.database.get_type(item)})')
             elif item.get_type() == 4:
                 self.get_current_list().addItem(
-                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day_and_month()} день года: {item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
-                    if item.get_place() else f'{item.get_name()}, каждый {Datetime(item.get_time()).day_and_month()} день года: {item.get_sum()} {result} ({self.database.get_type(item)})')
+                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day_and_month()} день года: ' +
+                    f'{item.get_sum()} {result}, {item.get_place()} ({self.database.get_type(item)})'
+                    if item.get_place() else
+                    f'{item.get_name()}, каждый {Datetime(item.get_time()).day_and_month()} день года: ' +
+                    f'{item.get_sum()} {result} ({self.database.get_type(item)})')
 
         # обновление дополнительно списка (с поэтапными доходами/расходами)
         self.get_current_month_list().clear()
@@ -198,8 +233,10 @@ class MainWindow(QMainWindow):
             word = MORPH.parse('рубль')[0]
             result = word.make_agree_with_number(item.get_sum()).word
             self.get_current_month_list().addItem(
-                f'{item.get_name()}, {Datetime(item.get_time()).str_date()}: {item.get_sum()} {result}, {item.get_place()}'
-                if item.get_place() else f'{item.get_name()}, {Datetime(item.get_time()).str_date()}: {item.get_sum()} {result}')
+                f'{item.get_name()}, {Datetime(item.get_time()).str_date()}: ' +
+                f'{item.get_sum()} {result}, {item.get_place()}'
+                if item.get_place() else
+                f'{item.get_name()}, {Datetime(item.get_time()).str_date()}: {item.get_sum()} {result}')
 
     # возвращает имя текущей таблицы для работы
     def get_current_table(self):
@@ -218,12 +255,24 @@ class MainWindow(QMainWindow):
 
     # удаляет элемент из базы данных
     def delete_item(self, item):
-        self.database.delete_item(item)
-        self.update_current_list()
+        box = QMessageBox(self)
+        box.setWindowTitle(f'Удаление {item.str_income_or_expance()}a')
+        box.setText(
+            f'Вы действительно хотите удалить этот {item.str_income_or_expance()}?')
+        box.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        button_yes = box.button(QMessageBox.Yes)
+        button_yes.setStyleSheet(STYLE)
+        button_no = box.button(QMessageBox.No)
+        button_no.setStyleSheet(STYLE)
+        result = box.exec_()
+        if result == QMessageBox.Yes:
+            self.database.delete_item(item)
+            self.update_current_list()
 
     # обнавляет всю информацию. Вызывается каждый день (если программу не закрывать)
     # из-за того, функция выполняется в другом потоке, ей необходима своя собственная база данных
     # (так как нельзя использовать одну и ту же базу данных в разных потоках)
+
     def update_data(self):
         prev_database = self.database
         self.database = Database('finances.db')
@@ -405,7 +454,7 @@ class EditForm(QWidget):
         self.main_window.delete_item(self.item)
         self.hide()
 
-    # отправка информации об новом/изменённом элементе
+    # отправка информации о новом/изменённом элементе
     def share_data(self):
         # если есть ошибки в заполнении формы, то показать их и не отправлять данные
         error = False

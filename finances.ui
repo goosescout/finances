@@ -30,7 +30,7 @@
      <string notr="true">background-color: #E0FFFF;</string>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QLabel" name="budget_label">
@@ -201,8 +201,8 @@
      <widget class="QPushButton" name="help">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>110</y>
+        <x>0</x>
+        <y>500</y>
         <width>111</width>
         <height>31</height>
        </rect>
@@ -241,9 +241,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>150</y>
+        <y>280</y>
         <width>421</width>
-        <height>251</height>
+        <height>221</height>
        </rect>
       </property>
       <property name="font">
@@ -252,7 +252,13 @@
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">background-color: #FFFFFF;</string>
+       <string notr="true"/>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
       </property>
       <property name="readOnly">
        <bool>true</bool>
