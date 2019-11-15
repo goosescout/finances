@@ -46,7 +46,7 @@ Your input: {time}, (class: {time.__class__})''')
     def convert_to_python(self, input_time):
         '''
         requires Qt DateTime class instance
-        returns Python datetime class
+        returns Python datetime class instance
         '''
         date = input_time.date()
         time = input_time.time()
@@ -56,7 +56,7 @@ Your input: {time}, (class: {time.__class__})''')
     def convert_str_to_python(self, input_str):
         '''
         requires string like '%Y-%m-%d %H:%M:%S' or '%d.%m.%Y %H:%M or %Y-%m-%d'
-        returns Python datetime class
+        returns Python datetime class instance
         '''
         try:
             return datetime.strptime(input_str, '%Y-%m-%d')
